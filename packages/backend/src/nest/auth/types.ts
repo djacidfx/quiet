@@ -1,7 +1,13 @@
-import { LocalUserContext } from '@localfirst/auth'
-import { SigChain } from './sigchain'
+import { Keyring, LocalUserContext } from '@localfirst/auth'
 
-export type LoadedSigChain = {
-  sigChain: SigChain
+export type SigChainSaveData = {
+  serializedTeam: string
   context: LocalUserContext
+  teamKeyRing: Keyring
+}
+
+export type SerializedSigChain = {
+  serializedTeam: Uint8Array
+  context: LocalUserContext
+  teamKeyRing: Keyring
 }

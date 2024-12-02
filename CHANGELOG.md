@@ -1,9 +1,11 @@
 # Changelog
 
-## [Unreleased]
+## [unreleased]
 
 ### New features
 
+* Adds basic sigchain functions ([#2625](https://github.com/TryQuiet/quiet/issues/2625))
+* Instantiates signature chain when creating communities and reloading application ([#2626](https://github.com/TryQuiet/quiet/issues/2626))
 * Added in LFA-ready invite links ([#2627](https://github.com/TryQuiet/quiet/issues/2627))
 
 ## [2.3.2]
@@ -12,10 +14,6 @@
 
 * Moved some responsibilities of identity management to the backend ([#2602](https://github.com/TryQuiet/quiet/issues/2602))
 * Added auth submodule in preparation for future encyrption work ([#2623](https://github.com/TryQuiet/quiet/issues/2623))
-
-### New features
-
-* Adds basic sigchain functions ([#2649](https://github.com/TryQuiet/quiet/pull/2649))
 
 ### Fixes
 
