@@ -1,10 +1,13 @@
+import { Buffer } from 'buffer'
 import { Inject, Injectable } from '@nestjs/common'
 import { Level } from 'level'
-import { type Community, type NetworkInfo, NetworkStats } from '@quiet/types'
+import { type Community, type NetworkInfo, NetworkStats, Identity, IdentityUpdatePayload } from '@quiet/types'
 import { createLibp2pAddress, filterAndSortPeers } from '@quiet/common'
 import { LEVEL_DB } from '../const'
 import { LocalDBKeys, LocalDbStatus } from './local-db.types'
 import { createLogger } from '../common/logger'
+import { SerializedSigChain, SigChainSaveData } from '../auth/types'
+import { SigChain } from '../auth/sigchain'
 
 @Injectable()
 export class LocalDbService {
@@ -36,7 +39,6 @@ export class LocalDbService {
     try {
       data = await this.db.get(key)
     } catch (e) {
-      this.logger.error(`Getting '${key}'`, e)
       return null
     }
     return data
@@ -100,10 +102,10 @@ export class LocalDbService {
   public async getSortedPeers(peers: string[], includeLocalPeerAddress: boolean = true): Promise<string[]> {
     const peersStats = (await this.get(LocalDBKeys.PEERS)) || {}
     const stats: NetworkStats[] = Object.values(peersStats)
-    const network = await this.getNetworkInfo()
+    const identity = await this.getIdentity(await this.get(LocalDBKeys.CURRENT_COMMUNITY_ID))
 
-    if (network) {
-      const localPeerAddress = createLibp2pAddress(network.hiddenService.onionAddress, network.peerId.id)
+    if (identity) {
+      const localPeerAddress = createLibp2pAddress(identity.hiddenService.onionAddress, identity.peerId.id)
       this.logger.info('Local peer', localPeerAddress)
       return filterAndSortPeers(peers, stats, localPeerAddress, includeLocalPeerAddress)
     } else {
@@ -112,6 +114,7 @@ export class LocalDbService {
   }
 
   public async setCommunity(community: Community) {
+    this.logger.info('Setting community', community.id)
     let communities = await this.get(LocalDBKeys.COMMUNITIES)
     if (!communities) {
       communities = {}
@@ -121,6 +124,7 @@ export class LocalDbService {
   }
 
   public async setCurrentCommunityId(communityId: string) {
+    this.logger.info('Setting current community id', communityId)
     await this.put(LocalDBKeys.CURRENT_COMMUNITY_ID, communityId)
   }
 
@@ -129,6 +133,7 @@ export class LocalDbService {
   }
 
   public async getCurrentCommunity(): Promise<Community | undefined> {
+    this.logger.info('Getting current community')
     const currentCommunityId = await this.get(LocalDBKeys.CURRENT_COMMUNITY_ID)
     const communities = await this.get(LocalDBKeys.COMMUNITIES)
 
@@ -139,25 +144,57 @@ export class LocalDbService {
     return communityId in ((await this.getCommunities()) ?? {})
   }
 
-  // These are potentially temporary functions to help us migrate data to the
-  // backend. Currently this information lives under the COMMUNITY key in
-  // LevelDB, but on the frontend this data lives in the Identity model. So we
-  // may want to keep this data in the Identity model in LevelDB (when we
-  // migrate it from the frontend) and have getIdentity/setIdentity functions.
-  public async setNetworkInfo(network: NetworkInfo) {
-    await this.put(LocalDBKeys.COMMUNITY, network)
+  // temporarily shoving identity creation here
+  public async setIdentity(identity: Identity) {
+    let identities = await this.get(LocalDBKeys.IDENTITIES)
+    if (!identities) {
+      identities = {}
+    }
+    identities[identity.id] = identity
+    await this.put(LocalDBKeys.IDENTITIES, identities)
   }
 
-  // These are potentially temporary functions to help us migrate data to the
-  // backend. Currently this information lives under the COMMUNITY key in
-  // LevelDB, but on the frontend this data lives in the Identity model. So we
-  // may want to keep this data in the Identity model in LevelDB (when we
-  // migrate it from the frontend) and have getIdentity/setIdentity functions.
-  public async getNetworkInfo(): Promise<NetworkInfo | undefined> {
-    const initCommunityPayload = await this.get(LocalDBKeys.COMMUNITY)
+  public async getIdentity(id: string): Promise<Identity | undefined> {
+    const identities = await this.get(LocalDBKeys.IDENTITIES)
+    return identities?.[id]
+  }
 
-    return initCommunityPayload
-      ? { peerId: initCommunityPayload.peerId, hiddenService: initCommunityPayload.hiddenService }
-      : undefined
+  public async getIdentities(): Promise<Record<string, Identity>> {
+    return await this.get(LocalDBKeys.IDENTITIES)
+  }
+
+  public async setSigChain(sigChain: SigChain) {
+    const teamName = sigChain.team.teamName
+    const key = `${LocalDBKeys.SIGCHAINS}${teamName}`
+    const serializedSigChain: SigChainSaveData = {
+      serializedTeam: Buffer.from(sigChain.save()).toString('base64'),
+      context: sigChain.context,
+      teamKeyRing: sigChain.team.teamKeyring(),
+    }
+    this.logger.info('Saving sigchain', teamName)
+    await this.put(key, serializedSigChain)
+  }
+
+  public async getSigChain(teamName: string): Promise<SerializedSigChain | undefined> {
+    const key = `${LocalDBKeys.SIGCHAINS}${teamName}`
+    this.logger.info('Getting sigchain', teamName, key)
+    const sigChainBlob = await this.get(key)
+    if (sigChainBlob) {
+      // convert serializedTeam from base64 to buffer to Uint8Array
+      const serializedTeamBuffer = Buffer.from(sigChainBlob.serializedTeam, 'base64')
+      return {
+        serializedTeam: new Uint8Array(serializedTeamBuffer),
+        context: sigChainBlob.context,
+        teamKeyRing: sigChainBlob.teamKeyRing,
+      } as SerializedSigChain
+    } else {
+      this.logger.error('Sigchain not found', teamName)
+      return undefined
+    }
+  }
+
+  public async deleteSigChain(teamName: string) {
+    const key = `${LocalDBKeys.SIGCHAINS}${teamName}`
+    await this.delete(key)
   }
 }

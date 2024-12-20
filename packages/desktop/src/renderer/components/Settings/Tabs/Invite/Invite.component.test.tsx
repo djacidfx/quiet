@@ -35,7 +35,7 @@ describe('CopyLink', () => {
       <body>
         <div>
           <div
-            class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-46t05l-MuiGrid-root"
+            class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-14gz6o9-MuiGrid-root"
           >
             <div
               class="MuiGrid-root MuiGrid-container MuiGrid-item InviteToCommunitytitleDiv css-89gxc5-MuiGrid-root"
@@ -80,10 +80,10 @@ describe('CopyLink', () => {
                     class="MuiTypography-root MuiTypography-body2 InviteToCommunitylink css-16d47hw-MuiTypography-root"
                     data-testid="invitation-link"
                   >
-                    ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+                    ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
                   </p>
                   <button
-                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall InviteToCommunityeyeIcon css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall InviteToCommunityeyeIcon css-8prnfn-MuiButtonBase-root-MuiIconButton-root"
                     data-testid="show-invitation-link"
                     tabindex="0"
                     type="button"
@@ -110,7 +110,7 @@ describe('CopyLink', () => {
               class="MuiGrid-root css-vj1n65-MuiGrid-root"
             >
               <button
-                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium InviteToCommunitybutton css-18k1y27-MuiButtonBase-root-MuiButton-root"
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium InviteToCommunitybutton css-1rwf87u-MuiButtonBase-root-MuiButton-root"
                 data-testid="copy-invitation-link"
                 tabindex="0"
                 type="button"
@@ -145,7 +145,7 @@ describe('CopyLink', () => {
       <body>
         <div>
           <div
-            class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-46t05l-MuiGrid-root"
+            class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-14gz6o9-MuiGrid-root"
           >
             <div
               class="MuiGrid-root MuiGrid-container MuiGrid-item InviteToCommunitytitleDiv css-89gxc5-MuiGrid-root"
@@ -190,10 +190,10 @@ describe('CopyLink', () => {
                     class="MuiTypography-root MuiTypography-body2 InviteToCommunitylink css-16d47hw-MuiTypography-root"
                     data-testid="invitation-link"
                   >
-                    https://tryquiet.org/join#QmVTkUad2Gq3MkCa8gf12R1gsWDfk2yiTEqb6YGXDG2iQ3=p3oqdr53dkgg3n5nuezlzyawhxvit5efxzlunvzp7n7lmva6fj3i43ad&k=12345&o=testOwnerOrbitDbIdentity
+                    https://tryquiet.org/join#p=QmVTkUad2Gq3MkCa8gf12R1gsWDfk2yiTEqb6YGXDG2iQ3%2Cp3oqdr53dkgg3n5nuezlzyawhxvit5efxzlunvzp7n7lmva6fj3i43ad&k=12345&o=testOwnerOrbitDbIdentity
                   </p>
                   <button
-                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall InviteToCommunityeyeIcon css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall InviteToCommunityeyeIcon css-8prnfn-MuiButtonBase-root-MuiIconButton-root"
                     data-testid="show-invitation-link"
                     tabindex="0"
                     type="button"
@@ -220,7 +220,7 @@ describe('CopyLink', () => {
               class="MuiGrid-root css-vj1n65-MuiGrid-root"
             >
               <button
-                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium InviteToCommunitybutton css-18k1y27-MuiButtonBase-root-MuiButton-root"
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium InviteToCommunitybutton css-1rwf87u-MuiButtonBase-root-MuiButton-root"
                 data-testid="copy-invitation-link"
                 tabindex="0"
                 type="button"

@@ -1,5 +1,5 @@
-import { nativeTheme } from '@electron/remote'
 import { createTheme, type Theme } from '@mui/material/styles'
+import React, { useEffect, useState } from 'react'
 
 const font = "'Rubik', sans-serif"
 const fontLogs = 'Menlo Regular'
@@ -98,7 +98,7 @@ const lightTheme = createTheme({
       darkPurple: '#4d1a6d', // To be replaced with theme.palette.primary.dark?
       lushSky: '#67BFD3',
       lushSky12: '#EDF7FA',
-      linkBlue: '#59c0d5', // Used in a variety of places - likely wants to be split / consolidated
+      linkBlue: '#1B6FEC', // Used in a variety of places - likely wants to be split / consolidated
       // Reds
       red: '#FF0000', // Replace with D13135 ?
       hotRed: '#E42656', // Replaced by theme.palette.secondary.main?
@@ -121,7 +121,8 @@ const lightTheme = createTheme({
       border03: '#D2D2D2',
       // Other custom colors
       sidebarBackground: '#511974',
-      sidebarSelected: '#fff3',
+      sidebarSelected: '#FFFFFF19',
+      sidebarHover: '#FFFFFF0C',
     },
   },
   //@ts-ignore MUI types expect 25 shadows - see: https://github.com/mui/material-ui/issues/28820
@@ -131,6 +132,27 @@ const lightTheme = createTheme({
     '0px 1px 0px #F0F0F0',
     '0px 1px 3px rgba(0, 0, 0, 0.0)',
     '0px 2px 25px rgba(0, 0, 0, 0.2)',
+    // From here, this is just 20 repeats until we figure out shadows
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
+    '0px 0px 4px rgba(0, 0, 0, 0.25)',
   ],
   components: {
     // Body font size changed in mui v5: https://mui.com/material-ui/migration/v5-component-changes/#update-body-font-size
@@ -189,6 +211,13 @@ const lightTheme = createTheme({
       styleOverrides: {
         paper: {
           borderRadius: 8,
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#FFF',
         },
       },
     },
@@ -316,8 +345,9 @@ const darkTheme = createTheme({
       border02: '#B3B3B3',
       border03: '#D2D2D2',
       // Gradients and other run-of-the-mill things
-      sidebarBackground: '#000',
-      sidebarSelected: '#fff3',
+      sidebarBackground: '#2F193D',
+      sidebarSelected: '#FFFFFF19',
+      sidebarHover: '#FFFFFF0C',
     },
   },
   //@ts-ignore MUI types expect 25 shadows - see: https://github.com/mui/material-ui/issues/28820
@@ -327,6 +357,27 @@ const darkTheme = createTheme({
     '0px 1px 0px #0F0F0F',
     '0px 1px 3px rgba(1, 1, 1, 0.0)',
     '0px 2px 25px rgba(1, 1, 1, 0.2)',
+    // Repeats until we design our shadows
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
+    '0px 0px 4px rgba(1, 1, 1, 0.25)',
   ],
   components: {
     // Body font size changed in mui v5: https://mui.com/material-ui/migration/v5-component-changes/#update-body-font-size
@@ -388,11 +439,51 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'none',
+        },
+      },
+    },
   },
 })
 
-const getTheme = (): Theme => {
-  return nativeTheme?.shouldUseDarkColors ? darkTheme : lightTheme
+const defaultTheme = darkTheme
+const getCurrentTheme = (useDarkTheme: boolean | undefined): Theme => {
+  if (useDarkTheme == null) {
+    return defaultTheme
+  }
+
+  return useDarkTheme ? darkTheme : lightTheme
 }
 
-export { lightTheme, darkTheme, getTheme }
+/**
+ * Check if dark mode is enabled natively in the OS and use an effect to get realtime updates to dark mode settings
+ * from the OS.
+ *
+ * NOTE: Defaults to the theme above
+ *
+ * @returns Theme that matches system theme
+ */
+const useTheme = (): Theme => {
+  const mediaQuery = () => (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null)
+  const [isDarkTheme, setDarkTheme] = useState<Theme>(
+    mediaQuery != null ? getCurrentTheme(mediaQuery()?.matches) : defaultTheme
+  )
+
+  useEffect(() => {
+    const mediaQueryResult = mediaQuery()
+    if ((mediaQueryResult as MediaQueryList).addEventListener != null) {
+      ;(mediaQueryResult as MediaQueryList).addEventListener('change', event => {
+        setDarkTheme(getCurrentTheme(event.matches))
+      })
+    } else {
+      setDarkTheme(defaultTheme)
+    }
+  }, [])
+
+  return isDarkTheme
+}
+
+export { lightTheme, darkTheme, defaultTheme, useTheme }

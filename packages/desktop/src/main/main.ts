@@ -132,12 +132,21 @@ export const applyDevTools = async () => {
   ]
   await Promise.all(
     extensionsData.map(async extension => {
-      await installer.default(extension.name)
+      try {
+        await installer.default(extension.name)
+      } catch (error) {
+        logger.error(`Failed to install ${extension.name}:${extension.path}:`, error)
+      }
     })
   )
+
   await Promise.all(
     extensionsData.map(async extension => {
-      await session.defaultSession.loadExtension(extension.path, { allowFileAccess: true })
+      try {
+        await session.defaultSession.loadExtension(extension.path, { allowFileAccess: true })
+      } catch (error) {
+        logger.error(`Failed to load extension from ${extension.path}:`, error)
+      }
     })
   )
 }
@@ -260,17 +269,19 @@ const isNetworkError = (errorObject: { message: string }) => {
   )
 }
 
-export const checkForUpdate = async (win: BrowserWindow) => {
+export const checkForUpdate = async () => {
   try {
     await autoUpdater.checkForUpdates()
   } catch (error) {
     if (isNetworkError(error)) {
-      logger.error('Network Error')
+      logger.warn(`updater: ${error.message}`)
     } else {
-      logger.error('Unknown Error')
-      logger.error(error == null ? 'unknown' : (error.stack || error).toString())
+      logger.error(error)
     }
   }
+}
+
+const setupUpdater = async () => {
   autoUpdater.on('checking-for-update', () => {
     logger.info('updater: checking-for-update')
   })
@@ -285,7 +296,9 @@ export const checkForUpdate = async (win: BrowserWindow) => {
   })
   autoUpdater.on('update-downloaded', () => {
     logger.info('updater: update-downloaded')
-    win.webContents.send('newUpdateAvailable')
+    if (isBrowserWindow(mainWindow)) {
+      mainWindow.webContents.send('newUpdateAvailable')
+    }
   })
   autoUpdater.on('before-quit-for-update', () => {
     logger.info('updater: before-quit-for-update')
@@ -505,12 +518,10 @@ app.on('ready', async () => {
       }
     }
 
-    await checkForUpdate(mainWindow)
+    await setupUpdater()
+    await checkForUpdate()
     setInterval(async () => {
-      if (!isBrowserWindow(mainWindow)) {
-        throw new Error(`mainWindow is on unexpected type ${mainWindow}`)
-      }
-      await checkForUpdate(mainWindow)
+      await checkForUpdate()
     }, updaterInterval)
   })
 

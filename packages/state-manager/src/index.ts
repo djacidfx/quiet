@@ -79,7 +79,7 @@ export * from './constants'
 
 export { formatBytes } from './utils/functions/formatBytes/formatBytes'
 
-export { getInvitationCodes } from './utils/functions/invitationCode/invitationCode'
+export { getInvitationLinks as getInvitationCodes } from './utils/functions/invitationCode/invitationCode'
 
 export type { Socket } from './types'
 
@@ -88,6 +88,8 @@ export * from './sagas/identity/identity.types'
 export * from './sagas/communities/communities.types'
 
 export * from './sagas/users/users.types'
+
+export * from './sagas/users/const/certFieldTypes'
 
 export * from './sagas/publicChannels/publicChannels.types'
 

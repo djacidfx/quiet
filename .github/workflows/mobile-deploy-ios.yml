@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-12]
+        os: [macos-13]
 
     steps:
       - name: "Print OS"
@@ -22,6 +22,7 @@ jobs:
 
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
+          submodules: 'recursive'
           lfs: true
 
       - name: Install gpg
@@ -30,7 +31,7 @@ jobs:
       - name: Setup XCode
         uses: maxim-lobanov/setup-xcode@9a697e2b393340c3cacd97468baa318e4c883d98 # v1.5.1
         with:
-          xcode-version: '14.2'
+          xcode-version: '15.2'
 
       - name: Setup environment
         uses: ./.github/actions/setup-env
@@ -58,8 +59,8 @@ jobs:
             -scheme Quiet \
             -configuration Release \
             -archivePath build/Quiet.xcarchive \
-            PROVISIONING_PROFILE="718ac015-309f-49b6-9653-f6cf84a6377c" \
-            CODE_SIGN_IDENTITY="Apple Distribution: Zbay LLC (CTYKSWN9T4)"
+            PROVISIONING_PROFILE="762df280-302c-4336-a56d-c74914169337" \
+            CODE_SIGN_IDENTITY="Apple Distribution: A Quiet LLC (CTYKSWN9T4)"
 
       - name: Export .ipa
         run: |
